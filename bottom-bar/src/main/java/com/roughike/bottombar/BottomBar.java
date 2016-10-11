@@ -340,7 +340,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         );
 
         inActiveShiftingItemWidth = (int) (proposedItemWidth * 0.9);
-        activeShiftingItemWidth = (int) (proposedItemWidth + (proposedItemWidth * (bottomBarItems.size() * 0.1)));
+        activeShiftingItemWidth = (int) (proposedItemWidth + (proposedItemWidth * (visibleTabs * 0.1)));
         int height = Math.round(getContext().getResources().getDimension(R.dimen.bb_height));
 
         for (BottomBarTab bottomBarView : viewsToAdd) {
