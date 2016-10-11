@@ -252,6 +252,29 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
                 .build();
     }
 
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+
+        boolean someViewsGone = false;
+        ArrayList<BottomBarTab> visibleTabs = new ArrayList<>();
+        int tabIndex = 0;
+        for (int i = 0; i < getTabCount(); i++) {
+            BottomBarTab currentTab = getTabAtPosition(i);
+            currentTab.setIndexInContainer(tabIndex);
+            visibleTabs.add(currentTab);
+            tabIndex++;
+
+            if (currentTab.getVisibility() == GONE && !someViewsGone) {
+                someViewsGone = true;
+            }
+        }
+        if (someViewsGone) {
+            tabContainer.removeAllViews();
+            updateItems(visibleTabs);
+        }
+    }
+
     private void updateItems(final List<BottomBarTab> bottomBarItems) {
         int index = 0;
         int biggestWidth = 0;
@@ -301,8 +324,16 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void resizeTabsToCorrectSizes(List<BottomBarTab> bottomBarItems, BottomBarTab[] viewsToAdd) {
+        visibleTabs = 0;
+        for (int i = 0; i < bottomBarItems.size(); i++) {
+            BottomBarTab currentTab = bottomBarItems.get(i);
+            if (currentTab.getVisibility() == VISIBLE) {
+                visibleTabs += 1;
+            }
+        }
+
         int proposedItemWidth = Math.min(
-                MiscUtils.dpToPixel(getContext(), screenWidth / bottomBarItems.size()),
+                MiscUtils.dpToPixel(getContext(), screenWidth / visibleTabs),
                 maxFixedItemWidth
         );
 
