@@ -324,7 +324,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void resizeTabsToCorrectSizes(List<BottomBarTab> bottomBarItems, BottomBarTab[] viewsToAdd) {
-        visibleTabs = 0;
+        int visibleTabs = 0;
         for (int i = 0; i < bottomBarItems.size(); i++) {
             BottomBarTab currentTab = bottomBarItems.get(i);
             if (currentTab.getVisibility() == VISIBLE) {
